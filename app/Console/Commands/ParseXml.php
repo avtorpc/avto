@@ -38,9 +38,10 @@ class ParseXml extends Command
     {
         $args = $this->argument('filename');
         $d_t = new \DateTime();
+        $shcema = env( 'DB_SCHEMA');
         $table_name =  "lost_" . $d_t->getTimestamp();
         $sequence_name = "lost_id_seq_" . $d_t->getTimestamp();
-        $sql = $this->getSQL("avto_xml", $table_name, $sequence_name);
+        $sql = $this->getSQL($shcema, $table_name, $sequence_name);
 
         DB::unprepared($sql);
 
@@ -49,7 +50,7 @@ class ParseXml extends Command
         }
 
         $sql = '
-           INSERT INTO ' . 'avto_xml' . '.' . $table_name . '(
+           INSERT INTO ' . $shcema . '.' . $table_name . '(
              "ID", "MARK", "MODEL", "GENERATION", "YEAR", "RUN", "COLOR", "BODY_TYPE", "ENGINE_TYPE", "TRANSMISSION", "GEAR_TYPE", "GENERATION_ID")
             VALUES (:ID, :MARK, :MODEL, :GENERATION, :YEAR, :RUN, :COLOR, :BODY_TYPE, :ENGINE_TYPE, :TRANSMISSION, :GEAR_TYPE, :GENERATION_ID);
         ';
